@@ -7,7 +7,101 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+# justLearnCode
+
+justLearnCode is a desktop-oriented programming learning application built
+with Laravel, PHP, React, MySQL, HTML, CSS, and JavaScript. It combines
+structured courses with progress tracking, quizzes, an AI learning tutor, and
+learning engagement tools.
+
+## Features
+
+- Registration, login, logout, profile editing, and validated profile pictures
+- Programming languages, courses, lessons, library search, notes, and favorites
+- Real lesson progress, learning history, time tracking, and continue learning
+- Server-side scored quizzes, retakes, result review, and quiz history
+- AI Tutor conversations with server-side credentials, ownership checks, and rate limiting
+- Browser Text-to-Speech for lessons, articles, AI responses, and quiz questions
+- English, French, and Spanish interface translations with persistent preferences
+- Achievements, daily learning streaks, and persistent notifications
+- Administrator dashboard with user management and educational content CRUD
+
+## Technology
+
+- Laravel 12 and PHP 8.2+
+- React 18 with Vite
+- MySQL 8+
+- Axios, React Router, react-i18next, and Tailwind CSS
+
+## Requirements
+
+Install PHP with Composer, Node.js with npm, and MySQL. Create a MySQL
+database matching the `DB_DATABASE` value in `.env`.
+
+## Installation
+
+```powershell
+composer install
+Copy-Item .env.example .env
+php artisan key:generate
+npm install
+php artisan migrate --seed
+php artisan storage:link
+```
+
+Set the database values and `AI_OPENAI_KEY` in `.env`. The AI key is used only
+by Laravel and must never be placed in React source or committed to Git.
+
+## Running
+
+Start Laravel and Vite in separate terminals:
+
+```powershell
+php artisan serve
+npm run dev
+```
+
+For a production frontend bundle:
+
+```powershell
+npm run build
+```
+
+## Database and seeders
+
+`php artisan migrate --seed` creates the learning, quiz, engagement, and admin
+schema and seeds languages, courses, lessons, library articles, quizzes,
+questions, options, and achievements. Use `php artisan migrate:fresh --seed`
+only when intentionally rebuilding a development database.
+
+The project does not create a public administrator password. Assign the admin
+role through a controlled development database operation, then change or
+remove that account before any production deployment.
+
+## Admin access
+
+Administrators use `/admin`. Laravel requires authentication and the `admin`
+middleware for every admin endpoint. The UI supports users, languages,
+courses, lessons, articles, quizzes, questions, and options.
+
+## Security notes
+
+Passwords are hashed by Laravel, profile images are MIME/type and size
+validated, user-owned resources are authorization-checked, quiz answers are
+graded server-side, and `.env`, dependencies, logs, and generated builds are
+ignored by Git.
+
+## Testing
+
+```powershell
+php artisan test
+npm run build
+```
+
+The browser Speech Synthesis API and responsive layouts should also be checked
+manually in the target browser at 1280x720, 1366x768, and 1920x1080.
+
+## Original Laravel documentation
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 

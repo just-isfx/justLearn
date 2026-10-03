@@ -1,0 +1,27 @@
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import PageContainer from '../components/PageContainer';
+import { createAdminResource, deleteAdminResource, getAdminDashboard, getAdminResource, updateAdminResource } from '../services/adminService';
+
+const resources = ['languages', 'courses', 'lessons', 'articles', 'quizzes', 'questions', 'options'];
+const fields = {
+    languages: ['name', 'slug', 'description'],
+    courses: ['programming_language_id', 'title', 'slug', 'description', 'level', 'estimated_duration', 'thumbnail'],
+    lessons: ['course_id', 'title', 'slug', 'description', 'content', 'lesson_order', 'estimated_minutes'],
+    articles: ['category_id', 'title', 'slug', 'summary', 'content'],
+    quizzes: ['course_id', 'lesson_id', 'title', 'description', 'passing_score'],
+    questions: ['quiz_id', 'question', 'explanation', 'question_type', 'question_order', 'points'],
+    options: ['question_id', 'option_text', 'is_correct', 'option_order'],
+};
+
+const AdminPage = () => {
+    const { t } = useTranslation(); const [stats, setStats] = useState(null); const [resource, setResource] = useState('courses'); const [items, setItems] = useState([]); const [form, setForm] = useState({}); const [editing, setEditing] = useState(null); const [loading, setLoading] = useState(true); const [error, setError] = useState('');
+    const load = async () => { setLoading(true); setError(''); try { const data = await getAdminResource(resource); setItems(data.data?.data || data.data || []); } catch (err) { setError(err?.response?.status === 403 ? t('admin.forbidden') : t('admin.loadError')); } finally { setLoading(false); } };
+    useEffect(() => { getAdminDashboard().then(setStats).catch(() => {}); }, []);
+    useEffect(() => { load(); setEditing(null); setForm({}); }, [resource]);
+    const submit = async (event) => { event.preventDefault(); setError(''); try { if (editing) await updateAdminResource(resource, editing, form); else await createAdminResource(resource, form); setForm({}); setEditing(null); load(); } catch (err) { setError(err?.response?.data?.message || t('admin.saveError')); } };
+    const remove = async (item) => { if (!window.confirm(t('admin.confirmDelete'))) return; try { await deleteAdminResource(resource, item.id); load(); } catch { setError(t('admin.deleteError')); } };
+    const edit = (item) => { setEditing(item.id); setForm(Object.fromEntries(fields[resource].map((field) => [field, item[field] ?? '']))); };
+    return <PageContainer><div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm"><p className="text-sm font-medium uppercase tracking-[0.25em] text-sky-600">{t('admin.eyebrow')}</p><h2 className="mt-2 text-3xl font-semibold text-slate-900">{t('admin.title')}</h2><div className="mt-6 grid gap-3 sm:grid-cols-3 lg:grid-cols-7">{stats && Object.entries(stats).map(([key, value]) => <div key={key} className="rounded-xl bg-slate-50 p-3"><p className="text-xs text-slate-500">{t(`admin.stats.${key}`, key)}</p><p className="mt-1 text-xl font-semibold">{value}</p></div>)}</div><div className="mt-8 flex flex-wrap gap-2">{resources.map((item) => <button type="button" key={item} onClick={() => setResource(item)} className={`rounded-lg px-3 py-2 text-sm font-medium ${resource === item ? 'bg-slate-900 text-white' : 'border border-slate-300 text-slate-700'}`}>{t(`admin.resources.${item}`, item)}</button>)}</div><div className="mt-8 grid gap-8 lg:grid-cols-[1fr_1.4fr]"><form onSubmit={submit} className="space-y-3 rounded-2xl border border-slate-200 p-5"><h3 className="font-semibold text-slate-900">{editing ? t('admin.edit') : t('admin.create')}</h3>{fields[resource].map((field) => <label key={field} className="block text-sm text-slate-600">{field}{field === 'content' ? <textarea required value={form[field] ?? ''} onChange={(event) => setForm({ ...form, [field]: event.target.value })} rows={12} className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2" /> : <input required={!['description','summary','thumbnail','lesson_id'].includes(field)} value={form[field] ?? ''} onChange={(event) => setForm({ ...form, [field]: event.target.value })} className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2" />}</label>)}{error && <p className="text-sm text-rose-600">{error}</p>}<div className="flex gap-2"><button type="submit" className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white">{editing ? t('admin.save') : t('admin.create')}</button>{editing && <button type="button" onClick={() => { setEditing(null); setForm({}); }} className="rounded-lg border border-slate-300 px-4 py-2 text-sm">{t('common.cancel')}</button>}</div></form><div className="overflow-x-auto rounded-2xl border border-slate-200">{loading ? <p className="p-5 text-slate-500">{t('common.loading')}</p> : items.length === 0 ? <p className="p-5 text-slate-500">{t('admin.empty')}</p> : <table className="w-full text-left text-sm"><tbody>{items.map((item) => <tr key={item.id} className="border-b border-slate-100"><td className="p-3 font-medium text-slate-800">{item.title || item.name || item.question || item.option_text}</td><td className="p-3 text-right"><button type="button" onClick={() => edit(item)} className="mr-3 text-sky-700">{t('common.edit')}</button><button type="button" onClick={() => remove(item)} className="text-rose-700">{t('common.delete')}</button></td></tr>)}</tbody></table>}</div></div></div></PageContainer>;
+};
+export default AdminPage;
