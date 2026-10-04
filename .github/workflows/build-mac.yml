@@ -24,13 +24,13 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Install Composer dependencies
-        run: composer install --no-interaction --prefer-dist --optimize-autoloader
+      - name: Install Composer Dependencies
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader --ignore-platform-reqs
 
       - name: Install NPM dependencies
         run: npm install
 
-      - name: Build frontend assets
+      - name: Build frontend asset
         run: npm run build
 
       - name: Build macOS Application
