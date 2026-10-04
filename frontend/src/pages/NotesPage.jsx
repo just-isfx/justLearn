@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useSearchParams } from 'react-router-dom';
 import PageContainer from '../components/PageContainer';
 import NoteCard from '../components/NoteCard';
 import NoteForm from '../components/NoteForm';
@@ -105,6 +106,7 @@ const Modal = ({ title, onClose, children }) => {
 // ─── Main page ─────────────────────────────────────────────────────────────────
 const NotesPage = () => {
     const { t } = useTranslation();
+    const [searchParams, setSearchParams] = useSearchParams();
     const [notes,       setNotes]       = useState([]);
     const [pagination,  setPagination]  = useState(null);
     const [loading,     setLoading]     = useState(true);
@@ -176,9 +178,18 @@ const NotesPage = () => {
     };
 
     // ── CRUD handlers ──────────────────────────────────────────────────────
-    const openCreate = () => { setSaveError(''); setEditingNote(null); setMode('create'); };
+    const openCreate = useCallback(() => { setSaveError(''); setEditingNote(null); setMode('create'); }, []);
     const openEdit   = (note) => { setSaveError(''); setEditingNote(note); setMode('edit'); };
     const closeModal = () => { setMode(null); setEditingNote(null); setSaveError(''); };
+
+    useEffect(() => {
+        if (searchParams.get('create') !== '1') return;
+
+        openCreate();
+        const nextSearchParams = new URLSearchParams(searchParams);
+        nextSearchParams.delete('create');
+        setSearchParams(nextSearchParams, { replace: true });
+    }, [openCreate, searchParams, setSearchParams]);
 
     const handleSave = async (payload) => {
         setSaving(true);

@@ -15,20 +15,16 @@ import { useTranslation } from 'react-i18next';
  */
 const NoteForm = ({ initialNote = null, context = null, onSave, onCancel, saving = false, serverError = '' }) => {
     const { t } = useTranslation();
-    const [title,   setTitle]   = useState(initialNote?.title   ?? '');
     const [content, setContent] = useState(initialNote?.content ?? '');
     const [errors,  setErrors]  = useState({});
 
-    const titleRef = useRef(null);
+    const contentRef = useRef(null);
 
-    // Focus title on mount
-    useEffect(() => { titleRef.current?.focus(); }, []);
+    useEffect(() => { contentRef.current?.focus(); }, []);
 
     const validate = () => {
         const e = {};
-        if (!title.trim())   e.title   = t('notes.titleRequired');
         if (!content.trim()) e.content = t('notes.contentRequired');
-        if (title.length > 255) e.title = t('notes.titleTooLong');
         if (content.length > 10_000) e.content = t('notes.contentTooLong');
         setErrors(e);
         return Object.keys(e).length === 0;
@@ -38,7 +34,16 @@ const NoteForm = ({ initialNote = null, context = null, onSave, onCancel, saving
         e.preventDefault();
         if (!validate()) return;
 
-        const payload = { title: title.trim(), content: content.trim() };
+        const bodyText = content.trim();
+        const firstSentenceOrLine = bodyText.split(/[.\n]/, 1)[0].trim();
+        const titleSource = firstSentenceOrLine || bodyText;
+        const maxTitleLength = 60;
+        const title = !titleSource
+            ? 'Untitled Note'
+            : titleSource.length > maxTitleLength
+                ? `${titleSource.slice(0, maxTitleLength - 3).trimEnd()}...`
+                : titleSource;
+        const payload = { title, content: bodyText };
 
         // Attach context (related item) if provided and not already overridden
         if (context?.type && context?.id) {
@@ -72,32 +77,13 @@ const NoteForm = ({ initialNote = null, context = null, onSave, onCancel, saving
                     </div>
                 )}
 
-                {/* Title */}
-                <div>
-                    <label htmlFor="note-title" className="block text-sm font-medium text-slate-700">
-                        {t('notes.titleLabel')} <span className="text-rose-500">*</span>
-                    </label>
-                    <input
-                        ref={titleRef}
-                        id="note-title"
-                        type="text"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        maxLength={255}
-                        placeholder={t('notes.titlePlaceholder')}
-                        className={`mt-1.5 w-full rounded-xl border px-4 py-2.5 text-sm text-slate-900 shadow-sm outline-none transition focus:ring-2 focus:ring-sky-500 ${
-                            errors.title ? 'border-rose-400 bg-rose-50' : 'border-slate-300 bg-white'
-                        }`}
-                    />
-                    {errors.title && <p className="mt-1 text-xs text-rose-600">{errors.title}</p>}
-                </div>
-
                 {/* Content */}
                 <div>
                     <label htmlFor="note-content" className="block text-sm font-medium text-slate-700">
                         {t('notes.contentLabel')} <span className="text-rose-500">*</span>
                     </label>
                     <textarea
+                        ref={contentRef}
                         id="note-content"
                         value={content}
                         onChange={(e) => setContent(e.target.value)}

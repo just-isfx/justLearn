@@ -32,7 +32,8 @@
     "unableToComplete": "Impossible de terminer la demande."
   },
   "header": {
-    "studentWorkspace": "Espace étudiant"
+    "studentWorkspace": "Espace étudiant",
+    "addNote": "Ajouter une note"
   },
   "common": {
     "loading": "Chargement...",
@@ -198,13 +199,9 @@
     "deleted": "Note supprimée.",
     "deleteTitle": "Supprimer la note ?",
     "deleteMessage": "« {{title}} » sera définitivement supprimée et ne pourra pas être récupérée.",
-    "titleLabel": "Titre",
     "contentLabel": "Contenu",
-    "titleRequired": "Le titre est obligatoire.",
     "contentRequired": "Le contenu est obligatoire.",
-    "titleTooLong": "Le titre doit contenir 255 caractères ou moins.",
     "contentTooLong": "Le contenu doit contenir 10 000 caractères ou moins.",
-    "titlePlaceholder": "Titre de la note",
     "contentPlaceholder": "Écrivez votre note ici…",
     "linkedTo": "Liée à : {{label}}",
     "typeCourse": "Cours",
