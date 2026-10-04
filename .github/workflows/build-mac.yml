@@ -4,6 +4,7 @@ on:
   push:
     tags:
       - "v*"
+  workflow_dispatch:
 
 jobs:
   build-macos:
@@ -20,6 +21,14 @@ jobs:
           extensions: mbstring, dom, fileinfo, curl, sqlite3
           coverage: none
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install PHP Dependencies
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader --ignore-platform-reqs
+
       - name: Prepare Environment File
         run: |
           if [ -f .env.example ]; then
@@ -29,24 +38,16 @@ jobs:
           fi
           php artisan key:generate --force
 
-      - name: Install PHP Dependencies
-        run: composer install --no-interaction --prefer-dist --optimize-autoloader
-
       - name: Install NPM Dependencies & Build Frontend
         run: |
           npm ci
           npm run build
 
-      - name: Prepare Environment File
-        run: |
-          cp .env.example .env
-          php artisan key:generate
-
       - name: Build macOS Application
-        run: php artisan native:build macos
+        run: php artisan native:build macos --no-interaction
 
       - name: Upload macOS Installer Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: macos-dmg-installer
-          path: nativephp/electron/dist/*.dmg
+          name: justLearn-macOS-Installer
+          path: dist/*.dmg
