@@ -24,7 +24,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          node-version: "24"
 
       - name: Install PHP Dependencies
         run: composer install --no-interaction --prefer-dist --optimize-autoloader
@@ -50,11 +50,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: justLearn-macOS-Installer
-          path: dist/*.dmg
-
-      - name: Upload macOS Installer Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: justLearn-macOS-Installer
-          path: dist/
+          path: "**/*.dmg"
           if-no-files-found: error
