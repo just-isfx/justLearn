@@ -51,3 +51,10 @@ jobs:
         with:
           name: justLearn-macOS-Installer
           path: dist/*.dmg
+
+      - name: Upload macOS Installer Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: justLearn-macOS-Installer
+          path: dist/
+          if-no-files-found: error
