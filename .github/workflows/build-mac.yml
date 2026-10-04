@@ -27,14 +27,18 @@ jobs:
       - name: Install Composer Dependencies
         run: composer install --no-interaction --prefer-dist --optimize-autoloader --ignore-platform-reqs
 
-      - name: Install NPM dependencies
-        run: npm install
+      - name: Install NPM Dependencies & Build Frontend
+        run: |
+          npm ci
+          npm run build
 
-      - name: Build frontend asset
-        run: npm run build
+      - name: Prepare Environment File
+        run: |
+          cp .env.example .env
+          php artisan key:generate
 
       - name: Build macOS Application
-        run: php artisan native:build mac --no-interaction
+        run: php artisan native:build macos
 
       - name: Upload macOS Installer Artifact
         uses: actions/upload-artifact@v4
