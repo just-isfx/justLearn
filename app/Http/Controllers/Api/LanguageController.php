@@ -43,7 +43,7 @@ class LanguageController extends Controller
     public function updateThemePreference(Request $request)
     {
         $validated = $request->validate([
-            'theme_preference' => ['required', 'string', Rule::in(['light', 'dark', 'system'])],
+            'theme_preference' => ['required', 'string', Rule::in(['light', 'dark'])],
         ]);
 
         $user = $request->user();

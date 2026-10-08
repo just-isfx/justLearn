@@ -2,7 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useLayoutEffect, use
 import { useAuth } from './AuthContext';
 import { saveThemePreference } from '../services/preferenceService';
 
-export const THEME_MODES = ['light', 'dark', 'system'];
+export const THEME_MODES = ['light', 'dark'];
 const THEME_STORAGE_KEY = 'justlearncode_theme';
 const PENDING_THEME_STORAGE_KEY = 'justlearncode_theme_pending';
 
@@ -13,44 +13,18 @@ const isThemeMode = (value) => THEME_MODES.includes(value);
 const readStoredTheme = () => {
     try {
         const storedTheme = window.localStorage.getItem(THEME_STORAGE_KEY);
-        return isThemeMode(storedTheme) ? storedTheme : 'system';
+        return isThemeMode(storedTheme) ? storedTheme : 'light';
     } catch {
-        return 'system';
+        return 'light';
     }
-};
-
-const getSystemTheme = () => {
-    if (typeof window === 'undefined' || !window.matchMedia) return 'light';
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 };
 
 export const ThemeProvider = ({ children }) => {
     const { user, loading: authLoading, applyUser } = useAuth();
     const [themePreference, setThemePreference] = useState(readStoredTheme);
-    const [systemTheme, setSystemTheme] = useState(getSystemTheme);
     const [savingTheme, setSavingTheme] = useState(false);
     const [themeError, setThemeError] = useState(false);
-    const activeTheme = themePreference === 'system' ? systemTheme : themePreference;
-
-    useEffect(() => {
-        if (typeof window === 'undefined' || !window.matchMedia) return undefined;
-
-        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-        const updateSystemTheme = (event) => setSystemTheme(event.matches ? 'dark' : 'light');
-        if (mediaQuery.addEventListener) {
-            mediaQuery.addEventListener('change', updateSystemTheme);
-        } else {
-            mediaQuery.addListener?.(updateSystemTheme);
-        }
-
-        return () => {
-            if (mediaQuery.removeEventListener) {
-                mediaQuery.removeEventListener('change', updateSystemTheme);
-            } else {
-                mediaQuery.removeListener?.(updateSystemTheme);
-            }
-        };
-    }, []);
+    const activeTheme = themePreference;
 
     useEffect(() => {
         if (authLoading || !user) return undefined;
@@ -98,7 +72,6 @@ export const ThemeProvider = ({ children }) => {
     const changeTheme = useCallback(async (nextTheme) => {
         if (!isThemeMode(nextTheme) || nextTheme === themePreference) return;
 
-        const previousTheme = themePreference;
         setThemeError(false);
         setThemePreference(nextTheme);
 

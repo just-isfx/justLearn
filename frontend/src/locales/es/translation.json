@@ -27,6 +27,11 @@
     "logout": "Cerrar sesión",
     "createAccount": "Crear cuenta",
     "welcomeBack": "Bienvenido de nuevo",
+    "returningUser": "Qué bueno verte de nuevo",
+    "continueAs": "Continuar como {{name}}",
+    "useAnotherAccount": "Usar otra cuenta",
+    "sessionError": "No se pudo verificar tu sesión actual. Puedes iniciar sesión de nuevo.",
+    "logoutError": "No se pudo cerrar la sesión. Inténtalo de nuevo.",
     "name": "Nombre",
     "pleaseWait": "Espere un momento...",
     "unableToComplete": "No se pudo completar la solicitud."
@@ -284,14 +289,13 @@
     "intro": "Elige la apariencia, el idioma de la interfaz y las preferencias de texto a voz.",
     "appearance": "Apariencia",
     "themePreference": "Preferencia de tema",
-    "themeHelp": "Elige un tema claro u oscuro, o usa la configuración del dispositivo.",
+    "themeHelp": "Elige entre un tema claro y uno oscuro.",
     "themeHelpAccount": "Esta preferencia se guarda en tu cuenta y se restaura al iniciar sesión.",
     "themeHelpDevice": "Esta preferencia se guarda en este dispositivo.",
-    "themeSaveError": "El tema del dispositivo está activo, pero la preferencia de la cuenta aún no se pudo sincronizar. Se volverá a intentar al reconectarte.",
+    "themeSaveError": "Tu tema local sigue activo, pero no se pudo sincronizar esta preferencia con tu cuenta.",
     "theme": {
       "light": "Claro",
-      "dark": "Oscuro",
-      "system": "Sistema"
+      "dark": "Oscuro"
     },
     "language": "Idioma",
     "languageHelp": "Esta preferencia se guarda en tu cuenta y se restaura al iniciar sesión.",

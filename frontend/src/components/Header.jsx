@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../contexts/AuthContext';
@@ -7,10 +8,20 @@ const Header = ({ titleKey }) => {
     const navigate = useNavigate();
     const { t } = useTranslation();
     const { user, logout } = useAuth();
+    const [logoutError, setLogoutError] = useState('');
+    const [loggingOut, setLoggingOut] = useState(false);
 
     const handleLogout = async () => {
-        await logout();
-        navigate('/auth');
+        setLogoutError('');
+        setLoggingOut(true);
+        try {
+            await logout();
+            navigate('/auth');
+        } catch {
+            setLogoutError(t('auth.logoutError'));
+        } finally {
+            setLoggingOut(false);
+        }
     };
 
     return (
@@ -33,9 +44,12 @@ const Header = ({ titleKey }) => {
                     </svg>
                 </button>
                 <UserAvatar user={user} />
-                <button type="button" onClick={handleLogout} className="rounded-full border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100">
-                    {t('auth.logout')}
-                </button>
+                <div className="text-right">
+                    <button type="button" onClick={handleLogout} disabled={loggingOut} className="rounded-full border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 disabled:opacity-50">
+                        {loggingOut ? t('auth.pleaseWait') : t('auth.logout')}
+                    </button>
+                    {logoutError && <p role="alert" className="mt-1 text-xs text-rose-600">{logoutError}</p>}
+                </div>
             </div>
         </header>
     );

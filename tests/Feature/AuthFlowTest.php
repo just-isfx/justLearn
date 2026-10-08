@@ -38,7 +38,7 @@ class AuthFlowTest extends TestCase
         $response->assertStatus(201)
             ->assertJsonPath('user.name', 'Ada Lovelace')
             ->assertJsonPath('user.email', 'ada@example.com')
-            ->assertJsonPath('user.theme_preference', 'system');
+            ->assertJsonPath('user.theme_preference', 'light');
 
         $this->assertAuthenticated();
         $this->assertDatabaseHas('users', ['email' => 'ada@example.com']);
@@ -95,6 +95,16 @@ class AuthFlowTest extends TestCase
 
         $this->putJson('/api/user/theme-preference', ['theme_preference' => 'sepia'])
             ->assertUnprocessable();
+
+        $this->putJson('/api/user/theme-preference', ['theme_preference' => 'system'])
+            ->assertUnprocessable();
+    }
+
+    public function test_legacy_theme_values_fall_back_to_light(): void
+    {
+        $user = User::factory()->create(['theme_preference' => 'system']);
+
+        $this->assertSame('light', $user->toAuthArray()['theme_preference']);
     }
 
     public function test_forgot_password_uses_a_generic_response_and_sends_a_reset_notification(): void

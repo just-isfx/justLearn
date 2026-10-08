@@ -17,7 +17,7 @@ const EyeIcon = ({ off = false }) => (
     </svg>
 );
 
-const PasswordField = ({ id, label, value, onChange, autoComplete, required = true, className = '' }) => {
+const PasswordField = ({ id, label, value, onChange, autoComplete, autoFocus = false, required = true, className = '' }) => {
     const [visible, setVisible] = useState(false);
 
     return (
@@ -31,6 +31,7 @@ const PasswordField = ({ id, label, value, onChange, autoComplete, required = tr
                     value={value}
                     onChange={onChange}
                     autoComplete={autoComplete}
+                    autoFocus={autoFocus}
                     required={required}
                     className="w-full rounded-xl border border-slate-300 px-4 py-3 pr-12"
                 />

@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('theme_preference', 10)->nullable()->default('system')->after('speech_rate');
+            $table->string('theme_preference', 10)->nullable()->default('light')->after('speech_rate');
         });
     }
 

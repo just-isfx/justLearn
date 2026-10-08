@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Native\Desktop\Facades\Menu;
 use Native\Desktop\Facades\Window;
 use Native\Desktop\Contracts\ProvidesPhpIni;
 
@@ -9,11 +10,17 @@ class NativeAppServiceProvider implements ProvidesPhpIni
 {
     /**
      * Executed once the native application has been booted.
-     * Use this method to open windows, register global shortcuts, etc.
      */
     public function boot(): void
     {
-        Window::open();
+        // 1. Clear top application menu bar (File, Edit, View, Window, Help)
+        Menu::clear();
+
+        // 2. Open main window maximized by default with standard controls
+        Window::open()
+            ->titleBarHidden()
+            ->maximized()
+            ->rememberState();
     }
 
     /**
@@ -22,6 +29,7 @@ class NativeAppServiceProvider implements ProvidesPhpIni
     public function phpIni(): array
     {
         return [
+            //
         ];
     }
 }

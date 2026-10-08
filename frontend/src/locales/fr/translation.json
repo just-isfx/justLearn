@@ -27,6 +27,11 @@
     "logout": "Déconnexion",
     "createAccount": "Créer un compte",
     "welcomeBack": "Bon retour",
+    "returningUser": "Heureux de vous revoir",
+    "continueAs": "Continuer en tant que {{name}}",
+    "useAnotherAccount": "Utiliser un autre compte",
+    "sessionError": "Impossible de vérifier votre session actuelle. Vous pouvez vous reconnecter.",
+    "logoutError": "Impossible de vous déconnecter. Veuillez réessayer.",
     "name": "Nom",
     "pleaseWait": "Veuillez patienter...",
     "unableToComplete": "Impossible de terminer la demande."
@@ -284,14 +289,13 @@
     "intro": "Choisissez l'apparence, la langue de l'interface et les préférences de synthèse vocale.",
     "appearance": "Apparence",
     "themePreference": "Préférence de thème",
-    "themeHelp": "Choisissez le thème clair ou sombre, ou suivez les réglages de votre appareil.",
+    "themeHelp": "Choisissez entre un thème clair et un thème sombre.",
     "themeHelpAccount": "Cette préférence est enregistrée sur votre compte et restaurée à la connexion.",
     "themeHelpDevice": "Cette préférence est enregistrée sur cet appareil.",
-    "themeSaveError": "Le thème de cet appareil est actif, mais la préférence du compte n'a pas encore pu être synchronisée. Une nouvelle tentative sera effectuée à la reconnexion.",
+    "themeSaveError": "Votre thème local reste actif, mais cette préférence n'a pas pu être synchronisée avec votre compte.",
     "theme": {
       "light": "Clair",
-      "dark": "Sombre",
-      "system": "Système"
+      "dark": "Sombre"
     },
     "language": "Langue",
     "languageHelp": "Cette préférence est enregistrée sur votre compte et restaurée à la connexion.",

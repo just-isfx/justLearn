@@ -73,7 +73,9 @@ class User extends Authenticatable
             'profile_picture_url' => $this->profile_picture_path ? Storage::url($this->profile_picture_path) : null,
             'preferred_language' => $this->preferred_language ?: config('languages.default', 'en'),
             'speech_rate' => $this->speech_rate ?? 1.0,
-            'theme_preference' => $this->theme_preference ?: 'system',
+            'theme_preference' => in_array($this->theme_preference, ['light', 'dark'], true)
+                ? $this->theme_preference
+                : 'light',
         ];
     }
 

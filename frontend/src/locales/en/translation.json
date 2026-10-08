@@ -39,6 +39,11 @@
     "logout": "Logout",
     "createAccount": "Create Account",
     "welcomeBack": "Welcome Back",
+    "returningUser": "Welcome back",
+    "continueAs": "Continue as {{name}}",
+    "useAnotherAccount": "Use another account",
+    "sessionError": "Unable to verify your existing session. You can sign in again.",
+    "logoutError": "Unable to sign out. Please try again.",
     "name": "Name",
     "pleaseWait": "Please wait...",
     "unableToComplete": "Unable to complete the request."
@@ -309,14 +314,13 @@
     "intro": "Choose your appearance, interface language, and Text-to-Speech preferences.",
     "appearance": "Appearance",
     "themePreference": "Theme preference",
-    "themeHelp": "Choose light or dark colors, or follow your device setting.",
+    "themeHelp": "Choose between light and dark colors.",
     "themeHelpAccount": "This preference is saved to your account and restored when you sign in.",
     "themeHelpDevice": "This preference is saved on this device.",
-    "themeSaveError": "Your device theme is active, but the account preference could not sync yet. It will retry when you reconnect.",
+    "themeSaveError": "Your local theme remains active, but this preference could not be synced to your account.",
     "theme": {
       "light": "Light",
-      "dark": "Dark",
-      "system": "System"
+      "dark": "Dark"
     },
     "language": "Language",
     "languageHelp": "This preference is saved to your account and restored when you sign in.",
