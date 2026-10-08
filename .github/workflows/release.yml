@@ -41,8 +41,8 @@ jobs:
           node-version: "24" # Updated to 24 to clear deprecation warning
 
       - name: Install PHP Dependencies
-        # Changed from install to update to bypass lock file conflicts
-        run: composer update --no-interaction --prefer-dist --optimize-autoloader
+        # Reverted to install and added --ignore-platform-reqs
+        run: composer install --ignore-platform-reqs --no-interaction --prefer-dist --optimize-autoloader
 
       - name: Install Node Dependencies & Build React/Vite
         run: |
