@@ -33,15 +33,16 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "8.2" # Update this if you use PHP 8.3
+          php-version: "8.3" # Updated to 8.3
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "24" # Updated to 24 to clear deprecation warning
 
       - name: Install PHP Dependencies
-        run: composer install --no-interaction --prefer-dist --optimize-autoloader
+        # Changed from install to update to bypass lock file conflicts
+        run: composer update --no-interaction --prefer-dist --optimize-autoloader
 
       - name: Install Node Dependencies & Build React/Vite
         run: |
