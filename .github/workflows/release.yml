@@ -1,10 +1,8 @@
 name: Build Native Desktop Apps
 
 on:
-  # This triggers the build automatically when you push to the main branch
   push:
     branches: ["main"]
-  # Also allows you to trigger the build manually from the GitHub website
   workflow_dispatch:
 
 jobs:
@@ -12,8 +10,8 @@ jobs:
     name: Build on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false # Prevents one OS failure from canceling the other OS builds
       matrix:
-        # Here we tell GitHub to spin up 3 different cloud machines
         os: [ubuntu-latest, macos-latest, windows-latest]
         include:
           - os: ubuntu-latest
@@ -33,18 +31,24 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "8.3" # Updated to 8.3
+          php-version: "8.2"
+          extensions: mbstring, dom, fileinfo, curl, zip, sqlite3, pdo_sqlite, bcmath
+          coverage: none
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "24" # Updated to 24 to clear deprecation warning
+          node-version: "20"
+
+      - name: Prepare Laravel Environment
+        run: |
+          cp .env.example .env
+          php artisan key:generate
 
       - name: Install PHP Dependencies
-        # Reverted to install and added --ignore-platform-reqs
-        run: composer install --ignore-platform-reqs --no-interaction --prefer-dist --optimize-autoloader
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader --ignore-platform-reqs
 
-      - name: Install Node Dependencies & Build React/Vite
+      - name: Install Node Dependencies & Build Frontend
         run: |
           npm install
           npm run build
@@ -52,8 +56,8 @@ jobs:
       - name: Build NativePHP Desktop App
         run: php artisan native:build ${{ matrix.target }}
         env:
-          # Bypass Windows symlink permission blocks in GitHub Actions
           NATIVEPHP_BUILDING: true
+          APP_ENV: production
 
       - name: Upload Compiled Installers
         uses: actions/upload-artifact@v4
