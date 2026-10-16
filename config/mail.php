@@ -110,9 +110,14 @@ return [
     |
     */
 
-    'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
-        'name' => env('MAIL_FROM_NAME', env('APP_NAME', 'Laravel')),
-    ],
+    'from_noreply' => [
+    'address' => env('MAIL_FROM_NOREPLY', 'noreply@justlearncode.com.ng'),
+    'name' => 'justLearnCode',
+],
+
+'from_support' => [
+    'address' => env('MAIL_FROM_SUPPORT', 'support@justlearncode.com.ng'),
+    'name' => 'justLearnCode Support',
+],
 
 ];

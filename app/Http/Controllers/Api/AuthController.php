@@ -4,13 +4,16 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Mail\WelcomeUserMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
+use App\Mail\ResetPasswordMail;
 
 class AuthController extends Controller
 {
@@ -29,6 +32,14 @@ class AuthController extends Controller
             'preferred_language' => config('languages.default', 'en'),
             'speech_rate' => 1.0,
         ]);
+
+        // Send Welcome Email from noreply@justlearncode.com.ng
+        try {
+            Mail::to($user->email)->send(new WelcomeUserMail($user));
+        } catch (\Exception $e) {
+            // Logs error if email fails without breaking user registration
+            \Log::error('Failed to send welcome email: ' . $e->getMessage());
+        }
 
         Auth::login($user);
         if ($request->hasSession()) {
@@ -70,7 +81,11 @@ class AuthController extends Controller
             'email' => ['required', 'email'],
         ]);
 
-        Password::sendResetLink(['email' => $validated['email']]);
+        $token = Password::createToken(User::where('email', $validated['email'])->first());
+
+        if ($token) {
+            Mail::to($validated['email'])->send(new ResetPasswordMail($token));
+        }
 
         return response()->json([
             'message' => 'If an account exists for that email, a password reset link has been sent.',

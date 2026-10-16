@@ -8,7 +8,11 @@ use App\Models\LessonProgress;
 use App\Models\WatchHistory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use App\Services\LearningActivityService;
+use App\Mail\CourseCompletedMail;
+
+
 
 class ProgressController extends Controller
 {
@@ -87,6 +91,10 @@ class ProgressController extends Controller
         $wasCompleted = $progress->isCompleted();
         if ($validated['progress_percentage'] === 100 && !$wasCompleted) {
             $progress->completed_at = now();
+        }
+        if ($isCompleted) {
+        Mail::to($request->user()->email)
+            ->send(new CourseCompletedMail($request->user(), $languageName));
         }
 
         $progress->save();

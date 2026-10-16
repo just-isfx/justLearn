@@ -49,6 +49,9 @@ Route::middleware('web')->group(function () {
         Route::get('/my/history', [ProgressController::class, 'getHistory']);
         Route::get('/my/courses/{slug}/progress', [EducationController::class, 'courseProgress']);
 
+        Route::post('/admin/maintenance-notice', [NotificationController::class, 'sendMaintenanceNotice']);
+
+
         Route::get('/courses/{courseId}/continue', [EducationController::class, 'continueCourse']);
 
         Route::get('/lessons/{lessonId}/progress', [ProgressController::class, 'getProgress']);
@@ -109,3 +112,4 @@ Route::middleware('web')->group(function () {
         });
     });
 });
+
