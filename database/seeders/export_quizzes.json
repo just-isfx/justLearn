@@ -1,0 +1,42 @@
+[
+    {
+        "id": 1,
+        "course_id": 4,
+        "lesson_id": null,
+        "title": "HTML Basics Quiz",
+        "description": "Practice choosing the right structure for common web content.",
+        "passing_score": 70,
+        "created_at": "2026-10-17T12:36:03.000000Z",
+        "updated_at": "2026-10-17T12:36:03.000000Z"
+    },
+    {
+        "id": 2,
+        "course_id": 5,
+        "lesson_id": null,
+        "title": "CSS Fundamentals Quiz",
+        "description": "Reason about selectors, layout, and visual presentation.",
+        "passing_score": 70,
+        "created_at": "2026-10-17T12:36:03.000000Z",
+        "updated_at": "2026-10-17T12:36:03.000000Z"
+    },
+    {
+        "id": 3,
+        "course_id": 6,
+        "lesson_id": null,
+        "title": "JavaScript Fundamentals Quiz",
+        "description": "Test your understanding of values, decisions, and reusable logic.",
+        "passing_score": 70,
+        "created_at": "2026-10-17T12:36:03.000000Z",
+        "updated_at": "2026-10-17T12:36:03.000000Z"
+    },
+    {
+        "id": 4,
+        "course_id": 7,
+        "lesson_id": null,
+        "title": "Python Fundamentals Quiz",
+        "description": "Practice Python concepts through beginner-friendly scenarios.",
+        "passing_score": 70,
+        "created_at": "2026-10-17T12:36:03.000000Z",
+        "updated_at": "2026-10-17T12:36:03.000000Z"
+    }
+]

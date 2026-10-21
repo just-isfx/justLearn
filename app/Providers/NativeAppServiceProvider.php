@@ -1,24 +1,20 @@
 <?php
-
 namespace App\Providers;
 
-use Native\Desktop\Facades\Window;
-use Native\Desktop\Contracts\ProvidesPhpIni;
+use Illuminate\Support\Facades\Artisan;
+use Native\Laravel\Contracts\ProvidesUninstall;
+use Native\Laravel\Facades\Window;
+use App\Services\ContentSyncService;
 
-class NativeAppServiceProvider implements ProvidesPhpIni
+
+class NativeAppServiceProvider implements ProvidesNativeApplication
 {
     public function boot(): void
-{
-    Window::open()
-        ->width(1050)
-        ->height(750)
-        ->center()
-        ->titleBarHidden()
-        ->rememberState();
-}
-
-    public function phpIni(): array
     {
-        return [];
+        Window::open()
+            ->title('justLearnCode')
+            ->width(1200)
+            ->height(800)
+            ->resizable();
     }
 }
